@@ -1,5 +1,5 @@
 import { isString } from "./generals";
-import { GenreErrors, GenreInfo, fullGenreInfo } from "../types";
+import { GenreErrors, GenreInfo, fullGenreInfo, noATPGenres } from "../types";
 
 export const isGenreInfo = (genreInfo: any): Boolean => {
   return !genreInfo.name || !isString(genreInfo.name) ? false : true;
@@ -31,7 +31,13 @@ export const validatedGenreInfoArray = (
     !genreInfoArray.length
   )
     throw new Error(GenreErrors.InvalidGenreInfo);
-  return genreInfoArray.map((obj: any): GenreInfo => validatedGenreInfo(obj));
+
+  const ATPGenres: Array<GenreInfo> = [];
+  for (const genre of genreInfoArray) {
+    if (!Object.values(noATPGenres).includes(genre.name))
+      ATPGenres.push(validatedGenreInfo(genre));
+  }
+  return ATPGenres;
 };
 
 export const validatedFullGenreInfo = (obj: any): fullGenreInfo => {

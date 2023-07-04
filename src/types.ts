@@ -7,6 +7,7 @@ export interface Anime {
   episodes: Number;
   status: Status;
   score: Number;
+  scoredBy: Number;
   sinopsis: String;
   aired: Aired;
   image: String;
@@ -31,7 +32,7 @@ export enum Status {
 
 export type Aired = {
   from: Date;
-  to: Date;
+  to: Date | null;
 };
 
 //? PRODUCER
@@ -39,10 +40,17 @@ export type Aired = {
 export interface ProducerInfo {
   title: String;
   japaneseTitle: String;
+  image: String;
+  about: String;
 }
 
-export interface ProducerFromDB extends ProducerInfo {
+export interface FullProducerInfo extends ProducerInfo {
   id: String;
+}
+
+export enum ProducersTitlesTypes {
+  Default = "Default",
+  Japanese = "Japanese",
 }
 
 //? GENRE
@@ -64,4 +72,18 @@ export enum GenreErrors {
   InvalidGenreInfo = "Invalid genre info",
   ServerError = "Server error",
   NotFound = "Genre not found",
+}
+
+export enum ProducerErrors {
+  InvalidProducerInfo = "Invalid producer info",
+  ServerError = "Server error",
+  NotFound = "Producer not found",
+}
+
+//ATP RULES
+export enum noATPGenres {
+  Ecchi = "Ecchi",
+  Erotica = "Erotica",
+  Hentai = "Hentai",
+  AdultCast = "Adult Cast",
 }

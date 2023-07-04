@@ -1,3 +1,1 @@
-const animesData: Array<object> = [];
-
-export const getAllAnimes = () => animesData;
+export const getFromAPI = () => {};

@@ -51,3 +51,11 @@ export const updateGenre = async (
   await disconnectDB();
   return validatedFullGenreInfo(updatedGenre);
 };
+
+export const deleteGenre = async (genreId: any) => {
+  const id = validatedMongoId(genreId);
+  const deletedGenre = await Genre.findByIdAndRemove(id);
+  if (!deletedGenre) throw new Error(GenreErrors.NotFound);
+  await disconnectDB();
+  return validatedFullGenreInfo(deletedGenre);
+};

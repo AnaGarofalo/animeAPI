@@ -1,12 +1,12 @@
 import { Router } from "express";
 import {
+  deleteGenre,
   getFromAPI,
   getFromDB,
   postGenre,
   updateGenre,
 } from "../services/genres";
-import { GenreErrors, fullGenreInfo } from "../types";
-import { disconnectDB } from "../database/db";
+import { fullGenreInfo } from "../types";
 import { isString } from "../validations/generals";
 import { errorHandler } from "../utils/errorHandler";
 
@@ -47,6 +47,17 @@ genresRouter.put("/:genreId", async (req, res, next) => {
     const { genreId } = req.params;
     const updatedGenre = await updateGenre(genreId, req.body);
     res.status(200).json(updatedGenre);
+  } catch (error: any) {
+    if (!isString(error.message)) next(error);
+    else errorHandler(error.message, res);
+  }
+});
+
+genresRouter.delete("/:genreId", async (req, res, next) => {
+  try {
+    const { genreId } = req.params;
+    const deletedGenre = await deleteGenre(genreId);
+    res.status(200).json(deletedGenre);
   } catch (error: any) {
     if (!isString(error.message)) next(error);
     else errorHandler(error.message, res);

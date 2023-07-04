@@ -1,5 +1,5 @@
 import { disconnectDB } from "../database/db";
-import { GeneralErrors, GenreErrors } from "../types";
+import { GeneralErrors, GenreErrors, ProducerErrors } from "../types";
 
 export const errorHandler = async (
   errorMessage: String,
@@ -12,6 +12,14 @@ export const errorHandler = async (
       res.status(400).json({ error: errorMessage });
       break;
     case GenreErrors.NotFound:
+      res.status(404).json({ error: errorMessage });
+      break;
+
+    //*Producer Error
+    case ProducerErrors.InvalidProducerInfo:
+      res.status(400).json({ error: errorMessage });
+      break;
+    case ProducerErrors.NotFound:
       res.status(404).json({ error: errorMessage });
       break;
 
