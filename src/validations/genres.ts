@@ -11,10 +11,15 @@ export const isFullGenreInfo = (fullGenreInfo: any): Boolean => {
   return true;
 };
 
+export const validatedCasesSring = (string: String) => {
+  return string[0].toUpperCase() + string.slice(1, string.length).toLowerCase();
+};
+
 export const validatedGenreInfo = (genreInfo: any): GenreInfo => {
   if (!genreInfo.name || !isString(genreInfo.name))
     throw new Error(GenreErrors.InvalidGenreInfo);
-  return { name: genreInfo.name };
+
+  return { name: validatedCasesSring(genreInfo.name) };
 };
 
 export const validatedGenreInfoArray = (

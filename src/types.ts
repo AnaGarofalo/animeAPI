@@ -55,7 +55,13 @@ export interface fullGenreInfo extends GenreInfo {
   id: String;
 }
 
+//! Error strings
+export enum GeneralErrors {
+  InvalidId = "Invalid Id",
+}
+
 export enum GenreErrors {
   InvalidGenreInfo = "Invalid genre info",
   ServerError = "Server error",
+  NotFound = "Genre not found",
 }

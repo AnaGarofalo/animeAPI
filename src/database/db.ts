@@ -4,9 +4,12 @@ const mongoose = require("mongoose");
 
 const uri = `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@cluster0.b954hsu.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`;
 
-const connectDB = async () => {
+export const connectDB = async () => {
   await mongoose.connect(uri);
-  console.log("db connected");
+  console.log("# DB connected");
 };
 
-module.exports = connectDB;
+export const disconnectDB = async () => {
+  await mongoose.connection.close();
+  console.log("# DB disconnected");
+};
