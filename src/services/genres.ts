@@ -3,6 +3,7 @@ import { API_URL_BASE } from "../utils/apiUrl";
 import { GenreErrors, GenreInfo, fullGenreInfo } from "../types";
 import Genre from "../database/models/genres";
 import {
+  alredyExists,
   validatedFullGenreInfo,
   validatedFullGenreInfoArray,
   validatedGenreInfo,
@@ -32,6 +33,8 @@ export const getFromDB = async (): Promise<fullGenreInfo[]> => {
 
 export const postGenre = async (genre: any): Promise<fullGenreInfo> => {
   const genreInfo = validatedGenreInfo(genre);
+  if (await alredyExists(genreInfo.name))
+    throw new Error(GenreErrors.AlredyExists);
   const newGenre = await Genre.create(genreInfo);
 
   await disconnectDB();

@@ -1,5 +1,7 @@
 //? ANIME
 
+import mongoose, { ObjectId } from "mongoose";
+
 export interface Anime {
   id: String;
   title: String;
@@ -14,26 +16,44 @@ export interface Anime {
 }
 
 export interface AnimeDetail extends Anime {
-  genres: Array<String>;
-  producers: Array<String>;
+  genres: Array<GenresForAnimeCards>;
+  producers: Array<ProducersForAnimeCards>;
 }
+
+export interface AnimeForDB extends Omit<Anime, "id"> {
+  genres: Array<mongoose.Types.ObjectId>;
+  producers: Array<mongoose.Types.ObjectId>;
+}
+
+// export interface AnimeFromAPI extends Omit<Anime, "id"> {
+//   genres: Array<mongoose.Types.ObjectId | null>;
+//   producers: Array<mongoose.Types.ObjectId | null>;
+//   rating: String;
+// }
 
 export type AnimeForCards = Pick<
   AnimeDetail,
-  "title" | "score" | "genres" | "producers" | "image"
+  "id" | "title" | "score" | "genres" | "producers" | "image"
 >;
+export type GenresForAnimeCards = {
+  id: String;
+  name: String;
+};
 
-export type AnimeForDB = Omit<AnimeDetail, "id">;
+export type ProducersForAnimeCards = {
+  id: String;
+  title: String;
+};
 
 export enum Status {
-  Airing = "Airing",
-  Finished = "Finished",
+  Airing = "Currently Airing",
+  Finished = "Finished Airing",
 }
 
-export type Aired = {
+export interface Aired {
   from: Date;
   to: Date | null;
-};
+}
 
 //? PRODUCER
 
@@ -53,6 +73,15 @@ export enum ProducersTitlesTypes {
   Japanese = "Japanese",
 }
 
+export interface ProducerInfoForUpdate {
+  title?: String;
+  japaneseTitle?: String;
+  image?: String;
+  about?: String;
+}
+
+export type MinProducerInfo = Pick<FullProducerInfo, "id" | "title">;
+
 //? GENRE
 
 export interface GenreInfo {
@@ -66,18 +95,38 @@ export interface fullGenreInfo extends GenreInfo {
 //! Error strings
 export enum GeneralErrors {
   InvalidId = "Invalid Id",
+  ExpectedArray = "An Array was expected",
 }
 
 export enum GenreErrors {
   InvalidGenreInfo = "Invalid genre info",
+  InvalidGenreName = "Invalid genre name",
   ServerError = "Server error",
   NotFound = "Genre not found",
+  AlredyExists = "Genre alredy exists",
 }
 
 export enum ProducerErrors {
   InvalidProducerInfo = "Invalid producer info",
+  InvalidProducerTitle = "Invalid Producer Title",
+  InvalidProducerImage = "Invalid Producer Image",
+  InvalidProducerAbout = "Invalid Producer About",
   ServerError = "Server error",
   NotFound = "Producer not found",
+  AlredyExists = "Producer alredy exists",
+}
+
+export enum AnimeErrors {
+  InvalidAnimeInfo = "Invalid Anime Info",
+  InvalidTitle = "Invalid Anime Title",
+  InvalidEpisodes = "Invalid Anime Episodes",
+  InvalidAired = "Invalid Anime Airing Period",
+  InvalidStatus = "Invalid Status",
+  InvalidScore = "Invalid Score",
+  InvalidGenre = "Invalid Anime Genre",
+  InvalidProducer = "Invalid Anime Producer",
+  NotFound = "Anime Not Found",
+  AlredyExists = "Anime alredy exists",
 }
 
 //ATP RULES
